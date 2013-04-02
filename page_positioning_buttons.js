@@ -12,17 +12,102 @@
 (function (document, window) {
   'use strict';
 
-  var numberOfPositions = 3;  // Sets number of positions
-  var bottomMargin = '40%';  // Sets bottom margin to percentage of the page height
+  // USER VARIABLES
 
-  var CSS_COMMON = 'cursor:pointer;width:36px;z-index:1000;';
-  var CSS = {
-    CONTAINER : CSS_COMMON + 'position:fixed;right:0px;',
-    TOP_BUTTON : CSS_COMMON + 'height:36px;border-radius:5px 0 0 0;background:url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB+SURBVDhPY1i1atV/amAGahgCMoNhaIGlS5cKAp19BoRBbLJcj2QILDJINwzoAmMgfoclIkBixkS5DI8hMJcRNgxoSBoOl6CnNZBhaVhdBjWE1MSJahjQkA4KEmYH2GUrV66cSYEhYB+AzKBtFiHkQqKiH6Ro1CDCQTWgYQQAs81DU0G/83sAAAAASUVORK5CYII=) no-repeat scroll 50% 50% rgba(0, 0, 0, 0);',
-    BTM_BUTTON : CSS_COMMON + 'height:36px;border-radius:0 0 0 5px;background:url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACPSURBVDhPY2DAAlatWvUfH8amB6vYqEGEg2pgw4iQ7cTKM6xcuXImsYpxqQOZAQ4woIIOCgzrQAl1oEFpZBiWhitFgwx7R4SBIDXYDYGZDFRgTMAwkCHGhBMRJMxwGUa8ITCbli5dKgg08AySN8+AxIhyCboiJMPIN4Qsm6miiYioxltawvSDYogohYTUAQC80UNTOht/YwAAAABJRU5ErkJggg==) no-repeat scroll 50% 50% rgba(0, 0, 0, 0);',
-    POS_BUTTON_REC : CSS_COMMON + 'height:16px;background:url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuODc7gF0AAAB7SURBVChTY2CAglWrVokAcRUQb4LiaiAtBpMH00ABayB+DcT/0fBbIN8OpkgUhyKYpndAeXGQaSAr0E1C59eDFG4mQuF2kMItxCqsJUJhI8hEcSAGORiXOz8A5aRgPncAct5jUQxS5IwelhJAwUYg3gHEO4G4CW4SUCUAr5P12vViZpQAAAAASUVORK5CYII=) no-repeat scroll 50% 50% rgba(0, 0, 0, 0);',
-    POS_BUTTON_RWD : CSS_COMMON + 'height:16px;background:url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuODc7gF0AAAB9SURBVChThc4xDkAwAEbhHsQgsRjsFgaDCziH+1hMJukBiMVgcCYhwmuiNCiSb1DvTwnx80gpHWTWjI8uCkxoHiGHHkrM2A5XyIGPCosR6LAVHAaosb4EOuxUGGP8iFTcnf/IS4rBMrhCvSBM0N8Gz9AYROrKY2APjUFInO9AjKU6HWDivAAAAABJRU5ErkJggg==) no-repeat scroll 50% 50% rgba(0, 0, 0, 0);'
+  var numberOfPositions = 3;  // Sets the number of recording positions
+  var bottomEdge = '40%';  // Sets the bottom edge position in % of the page height
+
+  // Extend object a with object b's properties.
+  var extend = function (a, b) {
+    for (var key in b) {
+      if (b.hasOwnProperty(key)) {
+        a[key] = b[key];
+      }
+    }
+    return a;
   };
+
+  var cssPropsCommon = {
+    cursor    : 'pointer',
+    width     : '36px',
+    'z-index' : '1000'
+  };
+
+  var cssPropsContainer = extend({
+    position  : 'fixed',
+    right     : '0px',
+    bottom    : bottomEdge
+  }, cssPropsCommon);
+
+  var cssPropsTopButton = extend({
+    height    : '36px',
+    background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB+SURBVDhPY1i1atV/amAGahgCMoNhaIGlS5cKAp19BoRBbLJcj2QILDJINwzoAmMgfoclIkBixkS5DI8hMJcRNgxoSBoOl6CnNZBhaVhdBjWE1MSJahjQkA4KEmYH2GUrV66cSYEhYB+AzKBtFiHkQqKiH6Ro1CDCQTWgYQQAs81DU0G/83sAAAAASUVORK5CYII=) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
+  }, cssPropsCommon);
+
+  var cssPropsBtmButton = extend({
+    height    : '36px',
+    background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACPSURBVDhPY2DAAlatWvUfH8amB6vYqEGEg2pgw4iQ7cTKM6xcuXImsYpxqQOZAQ4woIIOCgzrQAl1oEFpZBiWhitFgwx7R4SBIDXYDYGZDFRgTMAwkCHGhBMRJMxwGUa8ITCbli5dKgg08AySN8+AxIhyCboiJMPIN4Qsm6miiYioxltawvSDYogohYTUAQC80UNTOht/YwAAAABJRU5ErkJggg==) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
+  }, cssPropsCommon);
+
+  var cssPropsRecButton = extend({
+    height    : '16px',
+    background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuODc7gF0AAAB7SURBVChTY2CAglWrVokAcRUQb4LiaiAtBpMH00ABayB+DcT/0fBbIN8OpkgUhyKYpndAeXGQaSAr0E1C59eDFG4mQuF2kMItxCqsJUJhI8hEcSAGORiXOz8A5aRgPncAct5jUQxS5IwelhJAwUYg3gHEO4G4CW4SUCUAr5P12vViZpQAAAAASUVORK5CYII=) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
+  }, cssPropsCommon);
+
+  var cssPropsRwdButton = extend({
+    height    : '16px',
+    background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuODc7gF0AAAB9SURBVChThc4xDkAwAEbhHsQgsRjsFgaDCziH+1hMJukBiMVgcCYhwmuiNCiSb1DvTwnx80gpHWTWjI8uCkxoHiGHHkrM2A5XyIGPCosR6LAVHAaosb4EOuxUGGP8iFTcnf/IS4rBMrhCvSBM0N8Gz9AYROrKY2APjUFInO9AjKU6HWDivAAAAABJRU5ErkJggg==) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
+  }, cssPropsCommon);
+
+  // HELPER FUNCTIONS
+
+  // pfx is a function that takes a standard CSS property name as a parameter
+  // and returns it's prefixed version valid for current browser it runs in.
+  // The code is heavily inspired by Modernizr http://www.modernizr.com/
+  var pfx = (function () {
+
+    var style = document.createElement('dummy').style,
+    prefixes = 'Webkit Moz O ms Khtml'.split(' '),
+    memory = {};
+
+    return function ( prop ) {
+      if ( typeof memory[ prop ] === "undefined" ) {
+
+        var ucProp = prop.charAt(0).toUpperCase() + prop.substr(1),
+        props = (prop + ' ' + prefixes.join(ucProp + ' ') + ucProp).split(' ');
+
+        memory[ prop ] = null;
+        for ( var i in props ) {
+          if ( style[ props[i] ] !== undefined ) {
+            memory[ prop ] = props[i];
+            break;
+          }
+        }
+
+      }
+
+      return memory[ prop ];
+    };
+
+  })();
+
+  // css function applies the styles given in `props` object to the element
+  // given as `el`. It runs all property names through `pfx` function to make
+  // sure proper prefixed version of the property is used.
+  var css = function ( el, props ) {
+    var key, pkey;
+    for ( key in props ) {
+      if ( props.hasOwnProperty(key) ) {
+        pkey = pfx(key);
+        if ( pkey !== null ) {
+          el.style[pkey] = props[key];
+        }
+      }
+    }
+    return el;
+  };
+
+  // PAGE POSITIONING BUTTONS API
 
   var createPositionButton = function () {
     var position = 0,
@@ -49,12 +134,12 @@
     var record = function () {
       setPosition(window.pageYOffset);
 
-      button.style.cssText = CSS.POS_BUTTON_RWD;
+      css(button, cssPropsRwdButton);
       button.removeEventListener('click', record, false);
       button.addEventListener('click', rewind, false);
     };
 
-    button.style.cssText = CSS.POS_BUTTON_REC;
+    css(button, cssPropsRecButton);
     button.addEventListener('click', record, false);
 
     return {
@@ -107,9 +192,9 @@
       var topButton = document.createElement('div'),
       btmButton = document.createElement('div');
 
-      container.style.cssText = CSS.CONTAINER + 'bottom:' + bottomMargin;
-      topButton.style.cssText = CSS.TOP_BUTTON;
-      btmButton.style.cssText = CSS.BTM_BUTTON;
+      css(container, cssPropsContainer);
+      css(topButton, cssPropsTopButton);
+      css(btmButton, cssPropsBtmButton);
 
       topButton.addEventListener('click', pageGoToTop, false);
       topButton.addEventListener('mouseover', pageScrollUp, false);
@@ -132,6 +217,8 @@
       init      : init
     };
   };
+
+  // START PAGE POSITIONING BUTTONS
 
   if (window.top == window.self) { // if not iframe
 
