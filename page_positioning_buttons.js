@@ -29,34 +29,41 @@
 
   var cssPropsCommon = {
     cursor    : 'pointer',
-    width     : '36px',
     'z-index' : '1000'
   };
 
   var cssPropsContainer = extend({
+    width     : '36px',
     position  : 'fixed',
-    right     : '0px',
+    right     : '0',
     bottom    : bottomEdge
   }, cssPropsCommon);
 
   var cssPropsTopButton = extend({
+    width     : '36px',
     height    : '36px',
     background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB+SURBVDhPY1i1atV/amAGahgCMoNhaIGlS5cKAp19BoRBbLJcj2QILDJINwzoAmMgfoclIkBixkS5DI8hMJcRNgxoSBoOl6CnNZBhaVhdBjWE1MSJahjQkA4KEmYH2GUrV66cSYEhYB+AzKBtFiHkQqKiH6Ro1CDCQTWgYQQAs81DU0G/83sAAAAASUVORK5CYII=) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
   }, cssPropsCommon);
 
   var cssPropsBtmButton = extend({
-    height    : '36px',
-    background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACPSURBVDhPY2DAAlatWvUfH8amB6vYqEGEg2pgw4iQ7cTKM6xcuXImsYpxqQOZAQ4woIIOCgzrQAl1oEFpZBiWhitFgwx7R4SBIDXYDYGZDFRgTMAwkCHGhBMRJMxwGUa8ITCbli5dKgg08AySN8+AxIhyCboiJMPIN4Qsm6miiYioxltawvSDYogohYTUAQC80UNTOht/YwAAAABJRU5ErkJggg==) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
-  }, cssPropsCommon);
+    transform : 'rotate(180deg)'
+  }, cssPropsTopButton);
 
   var cssPropsRecButton = extend({
-    height    : '16px',
-    background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuODc7gF0AAAB7SURBVChTY2CAglWrVokAcRUQb4LiaiAtBpMH00ABayB+DcT/0fBbIN8OpkgUhyKYpndAeXGQaSAr0E1C59eDFG4mQuF2kMItxCqsJUJhI8hEcSAGORiXOz8A5aRgPncAct5jUQxS5IwelhJAwUYg3gHEO4G4CW4SUCUAr5P12vViZpQAAAAASUVORK5CYII=) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
+    width         : '12px',
+    height        : '12px',
+    borderRadius  : '50%',
+    background    : '#a8a8a8',
+    'marginLeft'  : '12px'
   }, cssPropsCommon);
 
   var cssPropsRwdButton = extend({
-    height    : '16px',
-    background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuODc7gF0AAAB9SURBVChThc4xDkAwAEbhHsQgsRjsFgaDCziH+1hMJukBiMVgcCYhwmuiNCiSb1DvTwnx80gpHWTWjI8uCkxoHiGHHkrM2A5XyIGPCosR6LAVHAaosb4EOuxUGGP8iFTcnf/IS4rBMrhCvSBM0N8Gz9AYROrKY2APjUFInO9AjKU6HWDivAAAAABJRU5ErkJggg==) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
+    width         : '0',
+    height        : '0',
+    'borderTop'   : '6px solid transparent',
+    'borderRight' : '12px solid #a8a8a8',
+    'borderBottom': '6px solid transparent',
+    'marginLeft'  : '11px'
   }, cssPropsCommon);
 
   // HELPER FUNCTIONS
@@ -94,13 +101,14 @@
   // css function applies the styles given in `props` object to the element
   // given as `el`. It runs all property names through `pfx` function to make
   // sure proper prefixed version of the property is used.
-  var css = function ( el, props ) {
+  // If rm is set to true, it removes the properties from the element.
+  var css = function ( el, props, rm ) {
     var key, pkey;
     for ( key in props ) {
       if ( props.hasOwnProperty(key) ) {
         pkey = pfx(key);
         if ( pkey !== null ) {
-          el.style[pkey] = props[key];
+          el.style[pkey] = rm ? null : props[key];
         }
       }
     }
@@ -134,6 +142,7 @@
     var record = function () {
       setPosition(window.pageYOffset);
 
+      css(button, cssPropsRecButton, true);
       css(button, cssPropsRwdButton);
       button.removeEventListener('click', record, false);
       button.addEventListener('click', rewind, false);
