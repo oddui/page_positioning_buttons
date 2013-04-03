@@ -14,8 +14,9 @@
 
   // USER VARIABLES
 
-  var numberOfPositions = 3;  // Sets the number of recording positions
-  var bottomEdge = '40%';  // Sets the bottom edge position in % of the page height
+  var numberOfPositions = 3,  // Sets the number of recording positions
+      bottomEdge = '40%',     // Sets the bottom edge position in % of the page height
+      color = '#a8a8a8';
 
   // Extend object a with object b's properties.
   var extend = function (a, b) {
@@ -28,42 +29,49 @@
   };
 
   var cssPropsCommon = {
-    cursor    : 'pointer',
-    'z-index' : '1000'
+    cursor : 'pointer',
+    zIndex : '1000'
   };
 
   var cssPropsContainer = extend({
-    width     : '36px',
-    position  : 'fixed',
-    right     : '0',
-    bottom    : bottomEdge
+    borderTop   : '2px solid' + color,
+    borderBottom: '2px solid' + color,
+    width       : '24px',
+    position    : 'fixed',
+    right       : '10px',
+    bottom      : bottomEdge
   }, cssPropsCommon);
 
   var cssPropsTopButton = extend({
-    width     : '36px',
-    height    : '36px',
-    background: 'url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB+SURBVDhPY1i1atV/amAGahgCMoNhaIGlS5cKAp19BoRBbLJcj2QILDJINwzoAmMgfoclIkBixkS5DI8hMJcRNgxoSBoOl6CnNZBhaVhdBjWE1MSJahjQkA4KEmYH2GUrV66cSYEhYB+AzKBtFiHkQqKiH6Ro1CDCQTWgYQQAs81DU0G/83sAAAAASUVORK5CYII=) no-repeat scroll 50% 50% rgba(0, 0, 0, 0)'
+    width       : '0',
+    height      : '0',
+    borderBottom: '12px solid' + color,
+    borderLeft  : '12px solid transparent',
+    borderRight : '12px solid transparent'
   }, cssPropsCommon);
 
   var cssPropsBtmButton = extend({
-    transform : 'rotate(180deg)'
+    transform : 'rotate(180deg)',
+    marginTop : '4px'
   }, cssPropsTopButton);
 
   var cssPropsRecButton = extend({
-    width         : '12px',
-    height        : '12px',
-    borderRadius  : '50%',
-    background    : '#a8a8a8',
-    'marginLeft'  : '12px'
+    width       : '12px',
+    height      : '12px',
+    borderRadius: '50%',
+    background  : color,
+    marginLeft  : '6px',
+    marginTop : '4px'
   }, cssPropsCommon);
 
   var cssPropsRwdButton = extend({
-    width         : '0',
-    height        : '0',
-    'borderTop'   : '6px solid transparent',
-    'borderRight' : '12px solid #a8a8a8',
-    'borderBottom': '6px solid transparent',
-    'marginLeft'  : '11px'
+    width       : '0',
+    height      : '0',
+    borderRight : '12px solid' + color,
+    borderTop   : '6px solid transparent',
+    borderBottom: '6px solid transparent',
+    marginLeft  : '5px',
+    marginTop   : '4px'
   }, cssPropsCommon);
 
   // HELPER FUNCTIONS
