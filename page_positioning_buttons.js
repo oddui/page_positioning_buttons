@@ -182,13 +182,13 @@
 
     var pageScrollUp = function () {
       if (intervalHandle === null) {
-        intervalHandle = setInterval(function(){window.scrollBy(0,-3);}, 60);
+        intervalHandle = setInterval(function(){window.scrollBy(0,-2);}, 40);
       }
     };
 
     var pageScrollDown = function () {
       if (intervalHandle === null) {
-        intervalHandle = setInterval(function(){window.scrollBy(0,3);}, 60);
+        intervalHandle = setInterval(function(){window.scrollBy(0,2);}, 40);
       }
     };
 
